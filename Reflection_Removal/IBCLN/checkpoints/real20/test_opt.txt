@@ -1,0 +1,41 @@
+----------------- Options ---------------
+             aspect_ratio: 1.0                           
+               batch_size: 2                             
+               blurKernel: 5                             
+          checkpoints_dir: ./checkpoints                 
+                crop_size: 256                           
+                 dataroot: datasets/reflection           	[default: None]
+             dataset_mode: resize_natural_3              	[default: unaligned]
+             dataset_size: 0                             
+          display_winsize: 256                           
+                    epoch: final                         	[default: latest]
+                     eval: False                         
+                  gpu_ids: 0                             
+                init_gain: 0.02                          
+                init_type: normal                        
+                 input_nc: 3                             
+                  isTrain: False                         	[default: None]
+                load_iter: 0                             	[default: 0]
+                load_size: 256                           
+         max_dataset_size: inf                           
+                    model: IBCLN                         	[default: test]
+               n_layers_D: 3                             
+                     name: real20                        	[default: experiment_name]
+                      ndf: 64                            
+                     netD: basic                         
+                     netG: gen_drop                      
+                      ngf: 64                            
+               no_dropout: False                         
+                  no_flip: True                          	[default: False]
+                     norm: instance                      
+                    ntest: inf                           
+                 num_test: 500                           
+              num_threads: 4                             
+                output_nc: 3                             
+                    phase: test                          
+               preprocess:                               	[default: resize_and_crop]
+              results_dir: ./results/                    
+           serial_batches: False                         
+                   suffix:                               
+                  verbose: False                         
+----------------- End -------------------
