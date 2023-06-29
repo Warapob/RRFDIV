@@ -1,0 +1,519 @@
+-------------- End ----------------
+Namespace(name='ytmt_ucs_sirs', gpu_ids=[0], model='ytmt_model_sirs', checkpoints_dir='./checkpoints', resume=False, resume_epoch=None, seed=2018, supp_eval=False, start_now=False, testr=False, select=None, serial_batches=False, nThreads=8, max_dataset_size=None, no_log=False, no_verbose=False, display_winsize=256, display_port=8097, display_id=0, display_single_pane_ncols=0, inet='ytmt_ucs', icnn_path=None, init_type='edsr', hyper=True, display_freq=100, update_html_freq=1000, print_freq=100, eval_freq=1, save_freq=1, no_html=False, save_epoch_freq=1, debug=False, finetune=False, if_align=True, nEpochs=60, lr=0.0001, wd=0, r_pixel_weight=1.0, low_sigma=2, high_sigma=5, low_gamma=1.3, high_gamma=1.3, real20_size=420, batchSize=1, loadSize='224,336,448', fineSize='224,224', no_flip=False, resize_or_crop='resize_and_crop', debug_eval=False, graph=False, which_model_D='disc_vgg', gan_type='rasgan', unaligned_loss='vgg', tv_type=None, vgg_layer=31, init_lr=0.01, fixed_lr=0, lambda_gan=0.01, lambda_vgg=0.1, isTrain=True)
+[i] reflection sythesis model: {'kernel_sizes': [11], 'low_sigma': 2, 'high_sigma': 5, 'low_gamma': 1.3, 'high_gamma': 1.3}
+[i] using a fusion dataset: 7752 [7643, 109] imgs fused with ratio [0.7, 0.3]
+/home/warapob/anaconda3/envs/YTMT/lib/python3.9/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/warapob/anaconda3/envs/YTMT/lib/python3.9/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG19_Weights.IMAGENET1K_V1`. You can also use `weights=VGG19_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+[i] initialization method [edsr]
+[i] initialization method [kaiming]
+--------------------- Model ---------------------
+##################### NetG #####################
+YTMT_US(
+  (inc): YTMTConvBlock(
+    (conv_l): ConvBlock(
+      (model): Sequential(
+        (0): Conv2d(1475, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      )
+    )
+    (conv_r): ConvBlock(
+      (model): Sequential(
+        (0): Conv2d(1475, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      )
+    )
+    (ytmt_head): ConcatYTMTHead(
+      (relu): ReLU()
+      (fusion_l): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1))
+      (fusion_r): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1))
+    )
+  )
+  (down1): YTMTDownBlock(
+    (max_pool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (model): YTMTAttConvBlock(
+      (conv_l): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(64, 8, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(8, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(64, 8, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(8, 64, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (conv_r): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(64, 8, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(8, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(64, 8, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(8, 64, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (ytmt_head): ConcatYTMTHead(
+        (relu): ReLU()
+        (fusion_l): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+        (fusion_r): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (down2): YTMTDownBlock(
+    (max_pool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (model): YTMTAttConvBlock(
+      (conv_l): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(128, 16, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(16, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(128, 16, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(16, 128, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (conv_r): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(128, 16, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(16, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(128, 16, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(16, 128, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (ytmt_head): ConcatYTMTHead(
+        (relu): ReLU()
+        (fusion_l): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1))
+        (fusion_r): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (down3): YTMTDownBlock(
+    (max_pool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (model): YTMTAttConvBlock(
+      (conv_l): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(256, 32, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(32, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(256, 32, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(32, 256, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (conv_r): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(256, 32, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(32, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(256, 32, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(32, 256, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (ytmt_head): ConcatYTMTHead(
+        (relu): ReLU()
+        (fusion_l): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1))
+        (fusion_r): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (down4): YTMTDownBlock(
+    (max_pool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (model): YTMTAttConvBlock(
+      (conv_l): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(64, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(64, 512, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (conv_r): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(64, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(64, 512, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (ytmt_head): ConcatYTMTHead(
+        (relu): ReLU()
+        (fusion_l): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1))
+        (fusion_r): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (up1): YTMTUpBlock(
+    (up_sampling): Upsample(scale_factor=2.0, mode='bilinear')
+    (model): YTMTAttConvBlock(
+      (conv_l): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(1024, 128, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(128, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(1024, 128, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(128, 1024, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(1024, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (conv_r): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(1024, 128, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(128, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(1024, 128, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(128, 1024, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(1024, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (ytmt_head): ConcatYTMTHead(
+        (relu): ReLU()
+        (fusion_l): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1))
+        (fusion_r): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (up2): YTMTUpBlock(
+    (up_sampling): Upsample(scale_factor=2.0, mode='bilinear')
+    (model): YTMTAttConvBlock(
+      (conv_l): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(64, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(64, 512, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(512, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (conv_r): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(64, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(64, 512, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(512, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (ytmt_head): ConcatYTMTHead(
+        (relu): ReLU()
+        (fusion_l): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+        (fusion_r): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (up3): YTMTUpBlock(
+    (up_sampling): Upsample(scale_factor=2.0, mode='bilinear')
+    (model): YTMTAttConvBlock(
+      (conv_l): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(256, 32, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(32, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(256, 32, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(32, 256, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(256, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (conv_r): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(256, 32, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(32, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(256, 32, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(32, 256, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(256, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (ytmt_head): ConcatYTMTHead(
+        (relu): ReLU()
+        (fusion_l): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1))
+        (fusion_r): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (up4): YTMTUpBlock(
+    (up_sampling): Upsample(scale_factor=2.0, mode='bilinear')
+    (model): YTMTAttConvBlock(
+      (conv_l): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(128, 16, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(16, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(128, 16, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(16, 128, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (conv_r): AttConvBlock(
+        (model): Sequential(
+          (0): PALayer(
+            (pa): Sequential(
+              (0): Conv2d(128, 16, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(16, 1, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (1): CALayer(
+            (avg_pool): AdaptiveAvgPool2d(output_size=1)
+            (ca): Sequential(
+              (0): Conv2d(128, 16, kernel_size=(1, 1), stride=(1, 1))
+              (1): ReLU(inplace=True)
+              (2): Conv2d(16, 128, kernel_size=(1, 1), stride=(1, 1))
+              (3): Sigmoid()
+            )
+          )
+          (2): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+      )
+      (ytmt_head): ConcatYTMTHead(
+        (relu): ReLU()
+        (fusion_l): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1))
+        (fusion_r): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (outc): YTMTOutBlock(
+    (conv_l): Sequential(
+      (0): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): Sigmoid()
+    )
+    (conv_r): Sequential(
+      (0): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): Sigmoid()
+    )
+  )
+)
+Total number of parameters: 19981574
+The size of receptive field: 41
+##################### NetD #####################
+Discriminator_VGG(
+  (body): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): LeakyReLU(negative_slope=0.2)
+    (2): Conv2d(64, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (3): GroupNorm(32, 64, eps=1e-05, affine=True)
+    (4): LeakyReLU(negative_slope=0.2)
+    (5): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (6): GroupNorm(32, 128, eps=1e-05, affine=True)
+    (7): LeakyReLU(negative_slope=0.2)
+    (8): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (9): GroupNorm(32, 128, eps=1e-05, affine=True)
+    (10): LeakyReLU(negative_slope=0.2)
+    (11): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (12): GroupNorm(32, 256, eps=1e-05, affine=True)
+    (13): LeakyReLU(negative_slope=0.2)
+    (14): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (15): GroupNorm(32, 256, eps=1e-05, affine=True)
+    (16): LeakyReLU(negative_slope=0.2)
+    (17): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (18): GroupNorm(32, 512, eps=1e-05, affine=True)
+    (19): LeakyReLU(negative_slope=0.2)
+    (20): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (21): GroupNorm(32, 512, eps=1e-05, affine=True)
+    (22): LeakyReLU(negative_slope=0.2)
+    (23): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (24): GroupNorm(32, 512, eps=1e-05, affine=True)
+    (25): LeakyReLU(negative_slope=0.2)
+    (26): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (27): GroupNorm(32, 512, eps=1e-05, affine=True)
+    (28): LeakyReLU(negative_slope=0.2)
+  )
+  (tail): Sequential(
+    (0): AdaptiveAvgPool2d(output_size=1)
+    (1): Conv2d(512, 1024, kernel_size=(1, 1), stride=(1, 1))
+    (2): LeakyReLU(negative_slope=0.2)
+    (3): Conv2d(1024, 1, kernel_size=(1, 1), stride=(1, 1))
+  )
+)
+Total number of parameters: 9937089
+The size of receptive field: 125
+create web directory ./checkpoints/ytmt_ucs_sirs/web...
+[i] set learning rate to 0.0001
