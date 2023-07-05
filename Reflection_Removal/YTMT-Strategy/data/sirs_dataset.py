@@ -10,7 +10,7 @@ from PIL import Image
 
 import data.torchdata as torchdata
 from data.image_folder import make_dataset
-from data.transforms import to_tensor, ReflectionSythesis_1
+from data.transforms import to_tensor, ReflectionSythesis_1, ReflectionSythesis_3
 
 
 def __scale_width(img, target_width):
@@ -130,9 +130,10 @@ class CEILDataset(BaseDataset):
         self.paths = sorted(make_dataset(datadir, fns), key=sortkey)
         if size is not None:
             self.paths = np.random.choice(self.paths, size)
-
-        self.syn_model = ReflectionSythesis_1(kernel_sizes=[11], low_sigma=low_sigma, high_sigma=high_sigma,
-                                              low_gamma=low_gamma, high_gamma=high_gamma)
+        # TODO : Change Method here
+        # self.syn_model = ReflectionSythesis_1(kernel_sizes=[11], low_sigma=low_sigma, high_sigma=high_sigma,
+        #                                       low_gamma=low_gamma, high_gamma=high_gamma)
+        self.syn_model = ReflectionSythesis_3()
         self.reset(shuffle=False)
 
     def reset(self, shuffle=True):
